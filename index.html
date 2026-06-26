@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Mundial Creativo 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Poppins,sans-serif;background:#0b0e1a;color:#fff;min-height:100vh;overflow-x:hidden}
+.btn{background:linear-gradient(135deg,#f7c948,#e2a829);color:#0b0e1a;border:none;padding:10px 20px;border-radius:25px;font-family:Poppins,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;box-shadow:0 4px 15px rgba(247,201,72,.3);display:inline-flex;align-items:center;gap:6px}
+.btn:active{transform:scale(.95)}
+.btn-small{padding:6px 14px;font-size:.75rem}
+.btn-sec{background:rgba(255,255,255,.08);color:#fff;box-shadow:none;border:1px solid rgba(255,255,255,.1)}
+input{font-family:Poppins,sans-serif}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:1000;display:none;justify-content:center;align-items:center;padding:16px}
+.modal-overlay.active{display:flex}
+.modal{background:linear-gradient(145deg,#1a1f35,#0f1325);border-radius:16px;padding:16px;max-width:400px;width:100%;max-height:90vh;overflow-y:auto;border:1px solid rgba(247,201,72,.15);position:relative}
+.modal-close{position:absolute;top:6px;right:10px;font-size:1.3rem;background:none;border:none;color:#fff;cursor:pointer;z-index:10}
+/* HEADER */
+.header{position:relative;padding:14px 16px 10px;text-align:center;overflow:hidden;min-height:90px;display:flex;flex-direction:column;justify-content:center}
+.header .header-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.18;pointer-events:none;background:#0b0e1a}
+.header .header-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,14,26,.3) 0%,rgba(11,14,26,.9) 100%)}
+.header .header-content{position:relative;z-index:1}
+.header h1{font-size:1.2rem;font-weight:900;background:linear-gradient(135deg,#f7c948,#ffd966);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header .sub{font-size:.65rem;color:#8891b0}
+.header .header-qr{position:absolute;right:12px;top:50%;transform:translateY(-50%);z-index:2;background:rgba(0,0,0,.6);border-radius:10px;padding:5px;cursor:pointer;border:1px solid rgba(247,201,72,.25)}
+.header .header-qr img{display:block;width:100%;height:100%;border-radius:6px}
+.header .header-qr canvas{display:block;width:100%;border-radius:6px}
+.name-row{display:flex;gap:8px;padding:6px 16px;align-items:center;justify-content:center;flex-wrap:wrap}
+.name-row input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;color:#fff;font-size:.8rem;width:150px;outline:none}
+.name-row input:focus{border-color:#f7c948}
+/* STATS BAR */
+.stats-bar{display:flex;gap:6px;padding:0 16px 8px;flex-wrap:wrap;justify-content:center}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:5px 12px;text-align:center;flex:0 1 auto}
+.stat-card .num{font-size:.95rem;font-weight:800;color:#f7c948}
+.stat-card .label{font-size:.6rem;color:#8891b0;text-transform:uppercase;letter-spacing:.5px}
+/* GAME GRID */
+.games-section{padding:4px 8px 12px}
+.games-section .section-title{font-size:.95rem;font-weight:700;margin-bottom:8px;text-align:center;color:#f7c948}
+.game-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0}
+.game-card{background:linear-gradient(145deg,#1a1f35,#0f1325);border-radius:16px;overflow:hidden;position:relative;cursor:pointer;transition:transform .12s;min-height:160px}
+.game-card:active{transform:scale(.95)}
+.game-card .bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#0f1325;opacity:.7;pointer-events:none;transition:opacity .2s;image-rendering:auto}
+.game-card:active .bg-img{opacity:.9}
+.game-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.65) 100%)}
+.game-card .content{position:relative;z-index:1;padding:14px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;min-height:170px}
+.game-card .icon{font-size:2.4rem;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.game-card .title{font-weight:800;font-size:1rem;margin-bottom:2px;text-shadow:0 2px 8px rgba(0,0,0,.7);color:#fff}
+.game-card .desc{font-size:.7rem;color:#8891b0;line-height:1.3}
+.game-card .status-dot{position:absolute;top:10px;right:10px;width:10px;height:10px;border-radius:50%;background:#444;z-index:2}
+.game-card .status-dot.done{background:#4caf50;box-shadow:0 0 8px rgba(76,175,80,.6)}
+/* FIGURITA */
+.figurita-section{padding:8px 16px 20px}
+.figurita-section h2{font-size:.9rem;font-weight:700;margin-bottom:8px;text-align:center;color:#f7c948}
+.figurita-card-wrap{max-width:340px;margin:0 auto}
+#figuritaCanvas{width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,.5);cursor:pointer}
+.figurita-actions{display:flex;gap:8px;margin-top:10px;justify-content:center;flex-wrap:wrap}
+/* CAMERA MODAL */
+#camContent video{width:100%;border-radius:10px;background:#000;max-height:260px}
+#camContent .btn{margin-top:6px}
+/* GAME MODAL */
+.game-modal .modal{background:#0f1325;max-width:420px}
+.game-modal canvas{display:block;margin:0 auto;max-width:100%;border-radius:8px;background:#000;touch-action:none}
+.game-modal .game-title{font-size:.9rem;font-weight:700;margin-bottom:4px;text-align:center}
+.game-modal .game-desc{font-size:.7rem;color:#8891b0;text-align:center;margin-bottom:8px}
+.game-over{text-align:center;padding:16px}
+.game-over .emoji{font-size:2.5rem;margin-bottom:8px}
+.game-over .msg{font-size:1rem;font-weight:700;margin-bottom:4px}
+.game-over .sub{font-size:.75rem;color:#8891b0}
+/* PRINT */
+@media print{
+  body{background:#fff;padding:0;margin:0}
+  .header,.name-row,.stats-bar,.game-grid,.figurita-section h2,.figurita-actions,.modal-overlay{display:none!important}
+  .figurita-section{padding:0;margin:0}
+  .figurita-card-wrap{max-width:100%;margin:0 auto;padding:10px}
+  #figuritaCanvas{max-width:100%;height:auto;border-radius:0;box-shadow:none}
+}
+@media print and (orientation:portrait){
+  #figuritaCanvas{width:90%;margin:auto}
+}
+/* CHAT AI */
+.chat-btn{position:fixed;bottom:16px;right:16px;width:50px;height:50px;border-radius:25px;background:linear-gradient(135deg,#f7c948,#e2a829);border:none;color:#0b0e1a;font-size:1.4rem;cursor:pointer;box-shadow:0 4px 20px rgba(247,201,72,.4);z-index:999;transition:transform .15s}
+.chat-btn:active{transform:scale(.9)}
+.chat-modal{position:fixed;bottom:76px;right:16px;width:300px;max-height:400px;background:linear-gradient(145deg,#1a1f35,#0f1325);border-radius:16px;border:1px solid rgba(247,201,72,.15);z-index:999;display:none;flex-direction:column;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+.chat-modal.open{display:flex}
+.chat-header{background:rgba(247,201,72,.1);padding:10px 14px;font-size:.8rem;font-weight:700;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.05)}
+.chat-header .ch-close{background:none;border:none;color:#8891b0;font-size:1.1rem;cursor:pointer}
+.chat-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;min-height:200px;max-height:280px}
+.chat-msg{max-width:85%;padding:8px 12px;border-radius:12px;font-size:.75rem;line-height:1.4;animation:fadeIn .2s ease}
+.chat-msg.bot{background:rgba(247,201,72,.12);color:#e0e0e0;align-self:flex-start;border-bottom-left-radius:4px}
+.chat-msg.user{background:rgba(255,255,255,.08);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-input-row{display:flex;padding:8px;gap:6px;border-top:1px solid rgba(255,255,255,.05)}
+.chat-input-row input{flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:.75rem;outline:none}
+.chat-input-row input:focus{border-color:#f7c948}
+.chat-input-row button{padding:8px 14px;border-radius:8px;border:none;background:#f7c948;color:#0b0e1a;font-weight:700;font-size:.75rem;cursor:pointer}
+/* ANIMATIONS */
+@keyframes fadeIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.chat-msg{animation:slideUp .2s ease}
+.modal{animation:fadeIn .15s ease}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(247,201,72,.2);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img class="header-bg" src="images.jpg" alt="" onerror="this.style.display='none'">
+  <img class="header-bg" src="images (1).jpg" alt="" onerror="this.style.display='none'" style="opacity:0">
+  <img class="header-bg" src="images (2).jpg" alt="" onerror="this.style.display='none'" style="opacity:0">
+  <img class="header-bg" src="images (3).jpg" alt="" onerror="this.style.display='none'" style="opacity:0">
+  <script>
+  // Rotate header images
+  (function(){
+    const imgs=document.querySelectorAll('.header > .header-bg');
+    let idx=0;
+    setInterval(()=>{
+      imgs.forEach((img,i)=>{
+        img.style.opacity=i===idx?'0.18':'0';
+        img.style.transition='opacity 0.8s ease';
+      });
+      idx=(idx+1)%imgs.length;
+    },3000);
+  })();
+  </script>
+  <div class="header-overlay"></div>
+  <div class="header-content">
+    <h1>⚽ Mundial Creativo 2026</h1>
+    <div class="sub">Jugá, coleccioná e imprimí tu figurita</div>
+  </div>
+  <div class="header-qr" id="headerQR" onclick="compartirJuegoQR()" title="Compartir juego" style="width:72px;height:72px">
+    <div id="headerQRCode" style="width:62px;height:62px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#f7c948">📱</div>
+  </div>
+</div>
+
+<!-- NAME + STATS -->
+<div class="name-row">
+  <input type="text" id="playerName" placeholder="Nombre" maxlength="20" value="" style="width:130px">
+  <input type="text" id="playerClub" placeholder="Club" maxlength="25" value="" style="width:130px">
+</div>
+<div class="name-row">
+  <input type="text" id="playerDOB" placeholder="Nacimiento (dd-mm-aaaa)" maxlength="10" value="" style="width:140px">
+  <input type="text" id="playerHeight" placeholder="Altura (ej: 1.75)" maxlength="6" value="" style="width:80px">
+  <input type="text" id="playerWeight" placeholder="Peso (ej: 70)" maxlength="5" value="" style="width:70px">
+</div>
+<div class="name-row">
+  <button class="btn btn-small" onclick="guardarDatos()">✓ Guardar Datos</button>
+  <span id="totalScore" style="font-size:.85rem;color:#f7c948;font-weight:700">0 pts</span>
+</div>
+<div class="stats-bar" id="statsBar"></div>
+
+<!-- GAME GRID -->
+<div class="games-section">
+  <div class="section-title">⚽ Juegos</div>
+  <div class="game-grid" id="gameGrid"></div>
+</div>
+
+<!-- FIGURITA -->
+<div class="figurita-section">
+  <h2>🃏 Tu Figurita Panini</h2>
+  <div class="figurita-card-wrap">
+    <canvas id="figuritaCanvas" width="600" height="850"></canvas>
+    <div class="figurita-actions">
+      <button class="btn btn-small" onclick="abrirCamara()">📸 Sacar Foto</button>
+      <button class="btn btn-small btn-sec" onclick="subirArchivo()">📁 Subir</button>
+      <button class="btn btn-small btn-sec" onclick="imprimirFigurita()">🖨️ Imprimir</button>
+      <button class="btn btn-small btn-sec" onclick="generarQR()">📱 QR Compartir</button>
+      <button class="btn btn-small btn-sec" onclick="escanearQR()">📷 Escanear QR</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT AI -->
+<button class="chat-btn" id="chatBtn" onclick="toggleChat()">💬</button>
+<div class="chat-modal" id="chatModal">
+  <div class="chat-header">
+    <span>🤖 Asistente Mundial</span>
+    <button class="ch-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Escribí algo..." onkeydown="if(event.key==='Enter')enviarMensaje()">
+    <button onclick="enviarMensaje()">▶</button>
+  </div>
+</div>
+
+<!-- GAME MODAL -->
+<div class="modal-overlay" id="gameModal">
+<div class="modal game-modal">
+  <button class="modal-close" onclick="closeGame()">✕</button>
+  <div class="game-title" id="gameTitle"></div>
+  <div class="game-desc" id="gameDesc"></div>
+  <div id="gameContent"></div>
+</div>
+</div>
+
+<!-- CAMERA MODAL -->
+<div class="modal-overlay" id="camModal">
+<div class="modal" style="max-width:340px">
+  <button class="modal-close" onclick="closeCam()">✕</button>
+  <div id="camContent"></div>
+</div>
+</div>
+
+<!-- QR MODAL -->
+<div class="modal-overlay" id="qrModal">
+<div class="modal" style="max-width:380px;text-align:center">
+  <button class="modal-close" onclick="cerrarQR()">✕</button>
+  <div id="qrContent"></div>
+</div>
+</div>
+
+<script>
+// ==================== DATA ====================
+const GAMES = [
+  {id:'penales',icon:'⚽',title:'Penales',desc:'Atajá y convertí',color:'#e74c3c'},
+  {id:'memorama',icon:'🧠',title:'Memorama',desc:'Encontrá los pares',color:'#2ecc71'},
+  {id:'sorteo',icon:'🎲',title:'Sorteo',desc:'Conocé a tus rivales',color:'#f39c12'},
+  {id:'cabeceo',icon:'⚡',title:'Cabeceo',desc:'Mantené la pelota',color:'#3498db'},
+  {id:'trivia',icon:'🏆',title:'Trivia',desc:'Preguntas mundialistas',color:'#9b59b6'},
+  {id:'reaccion',icon:'👀',title:'Reacción',desc:'Ganale al offside',color:'#1abc9c'},
+  {id:'partido',icon:'🎮',title:'Partido',desc:'Simulación 5v5',color:'#e67e22'},
+  {id:'realidad3d',icon:'🥽',title:'Realidad 3D',desc:'Anáglifo rojo-cian',color:'#2c3e50'}
+];
+
+const PREGUNTAS = [
+  {p:'¿Quién ganó el Mundial 2022?',r:'argentina'},
+  {p:'¿Cuántos mundiales ganó Argentina?',r:'3'},
+  {p:'¿En qué país se jugó el Mundial 2014?',r:'brasil'},
+  {p:'¿Quién es el máximo goleador de los Mundiales?',r:'klose'},
+  {p:'¿Qué selección tiene más títulos?',r:'brasil'},
+  {p:'¿En qué año se jugó el primer Mundial?',r:'1930'},
+  {p:'¿Quién usó la Mano de Dios?',r:'maradona'},
+  {p:'¿Quién ganó el Balón de Oro 2023?',r:'messi'}
+];
+
+const GRUPOS = [
+  ['Argentina','Brasil','Uruguay','Chile'],
+  ['Francia','Alemania','España','Italia'],
+  ['Inglaterra','Países Bajos','Portugal','Bélgica'],
+  ['Brasil','Argentina','Uruguay','Paraguay']
+];
+
+const imgs = ['images.jpg','images (1).jpg','images (2).jpg','images (3).jpg'];
+
+// ==================== STATE ====================
+let playerName = localStorage.getItem('mc_player')||'';
+let playerClub = localStorage.getItem('mc_club')||'';
+let playerDOB = localStorage.getItem('mc_dob')||'';
+let playerHeight = localStorage.getItem('mc_height')||'';
+let playerWeight = localStorage.getItem('mc_weight')||'';
+let scores = JSON.parse(localStorage.getItem('mc_scores')||'{}');
+
+function saveScores(){localStorage.setItem('mc_scores',JSON.stringify(scores))}
+function totalPts(){const v=Object.values(scores);return v.reduce((a,b)=>a+b,0)}
+function doneCount(){return Object.keys(scores).length}
+
+// ==================== INIT ====================
+try{
+document.getElementById('playerName').value=playerName;
+document.getElementById('playerClub').value=playerClub;
+document.getElementById('playerDOB').value=playerDOB;
+document.getElementById('playerHeight').value=playerHeight;
+document.getElementById('playerWeight').value=playerWeight;
+renderGames();
+renderStats();
+dibujarFigurita();
+}catch(e){console.error('Init error:',e)}
+
+function guardarDatos(){
+  playerName=document.getElementById('playerName').value.trim().toUpperCase()||'JUGADOR';
+  playerClub=document.getElementById('playerClub').value.trim().toUpperCase()||'MUNDIAL CREATIVO 2026';
+  playerDOB=document.getElementById('playerDOB').value.trim()||'01-01-2000';
+  playerHeight=document.getElementById('playerHeight').value.trim()||'1.75';
+  playerWeight=document.getElementById('playerWeight').value.trim()||'70';
+  localStorage.setItem('mc_player',playerName);
+  localStorage.setItem('mc_club',playerClub);
+  localStorage.setItem('mc_dob',playerDOB);
+  localStorage.setItem('mc_height',playerHeight);
+  localStorage.setItem('mc_weight',playerWeight);
+  dibujarFigurita();
+}
+
+function renderStats(){
+  document.getElementById('totalScore').textContent=totalPts()+' pts';
+  document.getElementById('statsBar').innerHTML=
+    '<div class="stat-card"><div class="num">'+totalPts()+'</div><div class="label">Puntos</div></div>'+
+    '<div class="stat-card"><div class="num">'+doneCount()+'/8</div><div class="label">Juegos</div></div>';
+}
+
+function renderGames(){
+  document.getElementById('gameGrid').innerHTML=GAMES.map((game,i)=>{
+    const done=scores[game.id]?true:false;
+    return '<div class="game-card" onclick="openGame('+i+')">'+
+      '<img class="bg-img" src="'+imgs[i%4]+'" alt="" onerror="this.style.display=\'none\'">'+
+      '<div class="overlay"></div>'+
+      '<div class="status-dot'+(done?' done':'')+'"></div>'+
+      '<div class="content"><div class="icon">'+game.icon+'</div><div class="title">'+game.title+'</div><div class="desc">'+game.desc+'</div></div></div>';
+  }).join('');
+}
+
+// ==================== GAME MODAL ====================
+function openGame(idx){
+  document.getElementById('gameTitle').textContent=GAMES[idx].icon+' '+GAMES[idx].title;
+  document.getElementById('gameDesc').textContent=GAMES[idx].desc;
+  document.getElementById('gameContent').innerHTML='<div style="text-align:center;padding:16px">Cargando...</div>';
+  document.getElementById('gameModal').classList.add('active');
+  startGame(idx);
+}
+
+function closeGame(){
+  document.getElementById('gameModal').classList.remove('active');
+  renderAll();
+}
+
+function renderAll(){
+  renderStats();
+  renderGames();
+  dibujarFigurita();
+}
+
+function completeGame(idx){
+  const id=GAMES[idx].id;
+  if(!scores[id]){scores[id]=5;saveScores()}
+  renderAll();
+}
+
+function gameContainer(){return document.getElementById('gameContent')}
+
+// ==================== GAMES ====================
+function startGame(idx){
+  const id=GAMES[idx].id;
+  const fns={
+    penales:gamePenales,memorama:gameMemorama,sorteo:gameSorteo,
+    cabeceo:gameCabeceo,trivia:gameTrivia,reaccion:gameReaccion,
+    partido:gamePartido,realidad3d:gameRealidad3D
+  };
+  if(fns[id]) fns[id](gameContainer(),()=>completeGame(idx));
+  else gameContainer().innerHTML='<div class="game-over"><div class="emoji">🚧</div><div class="msg">Próximamente</div></div>';
+}
+
+// ---------- PENALES ----------
+function gamePenales(c,done){
+  let r=0,g=0,shooting=false;
+  const cv=document.createElement('canvas');
+  cv.width=340;cv.height=260;
+  const cx=cv.getContext('2d');
+  c.innerHTML='<div style="text-align:center;font-size:.8rem;margin-bottom:4px">⚽ Tocá la pelota para patear</div>';
+  c.appendChild(cv);
+  function draw(bx,by,by2,txt){
+    cx.clearRect(0,0,340,260);
+    cx.fillStyle='#1a5c2a';cx.fillRect(0,0,340,260);
+    cx.strokeStyle='#fff';cx.lineWidth=1;cx.strokeRect(8,8,324,244);
+    cx.fillStyle='#fff';cx.fillRect(135,8,70,30);
+    cx.strokeStyle='#000';cx.strokeRect(135,8,70,30);
+    cx.strokeStyle='rgba(255,255,255,.3)';cx.lineWidth=.5;
+    for(let i=0;i<8;i++){cx.beginPath();cx.moveTo(135+i*10,8);cx.lineTo(135+i*10,38);cx.stroke()}
+    for(let i=0;i<7;i++){cx.beginPath();cx.moveTo(135,8+i*5);cx.lineTo(205,8+i*5);cx.stroke()}
+    cx.fillStyle='#e74c3c';cx.fillRect(150,by2,30,35);
+    cx.fillStyle='#c0392b';cx.fillRect(155,by2-6,20,10);
+    cx.fillStyle='#fff';
+    cx.beginPath();cx.arc(bx,by,9,0,Math.PI*2);cx.fill();
+    cx.fillStyle='#444';
+    cx.beginPath();cx.arc(bx-2,by-3,2,0,Math.PI*2);cx.fill();
+    cx.beginPath();cx.arc(bx+3,by-3,2,0,Math.PI*2);cx.fill();
+    cx.beginPath();cx.arc(bx,by+4,2,0,Math.PI*2);cx.fill();
+    cx.fillStyle='#fff';cx.font='bold 13px Poppins';cx.textAlign='center';cx.fillText(txt,170,190);
+  }
+  function shot(){
+    if(shooting) return;
+    shooting=true;
+    let px=170,py=210,dy=4;
+    const by2=20+Math.random()*40;
+    function anim(){
+      draw(px,py,by2,'');
+      py-=dy;
+      if(py>25) requestAnimationFrame(anim);
+      else{
+        const gol=Math.abs(py-by2)>22;
+        if(gol){g++;draw(px,py,by2,'⚽ GOL!')}else draw(px,py,by2,'❌ Atajó');
+        shooting=false;
+        r++;
+        if(r<3) setTimeout(shot,800);else setTimeout(()=>{
+          c.innerHTML='<div class="game-over"><div class="emoji">⚽</div><div class="msg">Goles: '+g+'/3</div></div>';
+          setTimeout(done,1200);
+        },500);
+      }
+    }
+    anim();
+  }
+  shot();
+}
+
+// ---------- MEMORAMA ----------
+function gameMemorama(c,done){
+  let sel=null,blk=false,aci=0,int=0;
+  const vals=['🇦🇷','🇧🇷','🇺🇾','🇫🇷','🇩🇪','🇳🇱','🇵🇹','🏴󠁧󠁢󠁥󠁮󠁧󠁿'];
+  const par=[...vals,...vals].sort(()=>Math.random()-.5);
+  const desc=new Array(16).fill(false);
+  const w=document.createElement('div');
+  w.style.cssText='display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:4px';
+  par.forEach((v,i)=>{
+    const card=document.createElement('div');
+    card.style.cssText='aspect-ratio:1;background:linear-gradient(135deg,#2a3f7a,#1a2a5a);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer';
+    card.dataset.idx=i;
+    card.onclick=()=>{
+      if(blk||desc[i]) return;
+      if(sel===null){sel=i;card.textContent=v;card.style.background='#1a3a5a'}
+      else if(sel!==i){
+        desc[i]=true;card.textContent=v;card.style.background='#1a3a5a';int++;blk=true;
+        if(par[sel]===v){aci++;desc[sel]=true;blk=false;sel=null;
+          if(aci===8){w.innerHTML='<div class="game-over" style="grid-column:1/5;padding:8px"><div class="emoji">🧠</div><div class="msg" style="font-size:.9rem">Completado! Intentos: '+int+'</div></div>';setTimeout(done,1200)}
+        }else{const pv=sel;const cards=w.children;
+          setTimeout(()=>{cards[pv].textContent='';cards[pv].style.background='linear-gradient(135deg,#2a3f7a,#1a2a5a)';cards[i].textContent='';cards[i].style.background='linear-gradient(135deg,#2a3f7a,#1a2a5a)';desc[i]=false;blk=false;sel=null},600)}
+      }
+    };
+    w.appendChild(card);
+  });
+  c.innerHTML='<div style="text-align:center;font-size:.7rem;color:#8891b0;margin-bottom:4px">Encontrá los 8 pares</div>';
+  c.appendChild(w);
+}
+
+// ---------- SORTEO ----------
+function gameSorteo(c,done){
+  const gr=GRUPOS[Math.floor(Math.random()*GRUPOS.length)];
+  c.innerHTML='<div style="text-align:center;padding:16px"><div style="font-size:2.5rem;margin-bottom:10px">🎲</div><div style="font-size:.85rem;font-weight:600;margin-bottom:8px">Sorteando...</div><div id="resSort" style="display:none;padding:8px"><div style="font-weight:700;font-size:1rem;margin-bottom:6px;color:#f7c948">Tu grupo:</div><div style="font-size:.95rem">'+gr.join(' · ')+'</div></div></div>';
+  setTimeout(()=>{
+    const el=document.getElementById('resSort');
+    if(el){el.style.display='block';el.innerHTML+='<div class="sub" style="margin-top:8px">¡A prepararse!</div>'}
+    setTimeout(done,1500);
+  },1200);
+}
+
+// ---------- CABECEO ----------
+function gameCabeceo(c,done){
+  let y=100,vy=0,golpes=0,activo=true,tiempo=8;
+  const cv=document.createElement('canvas');
+  cv.width=340;cv.height=260;
+  const cx=cv.getContext('2d');
+  const info=document.createElement('div');
+  info.style.cssText='display:flex;justify-content:space-between;padding:2px 8px;font-size:.75rem';
+  c.innerHTML='';c.appendChild(info);c.appendChild(cv);
+  function draw(){
+    cx.clearRect(0,0,340,260);
+    cx.fillStyle='#1a3a6a';cx.fillRect(0,0,340,260);
+    cx.strokeStyle='rgba(255,255,255,.05)';
+    for(let i=0;i<340;i+=20){cx.beginPath();cx.moveTo(i,0);cx.lineTo(i,260);cx.stroke()}
+    for(let i=0;i<260;i+=20){cx.beginPath();cx.moveTo(0,i);cx.lineTo(340,i);cx.stroke()}
+    cx.fillStyle='#fff';
+    cx.beginPath();cx.arc(170,y,14,0,Math.PI*2);cx.fill();
+    cx.fillStyle='#444';
+    cx.beginPath();cx.arc(167,y-3,2.5,0,Math.PI*2);cx.fill();
+    cx.beginPath();cx.arc(173,y-3,2.5,0,Math.PI*2);cx.fill();
+    cx.beginPath();cx.arc(170,y+5,2.5,0,Math.PI*2);cx.fill();
+    info.innerHTML='<span>💪 '+golpes+'</span><span>⏱ '+tiempo+'s</span>';
+  }
+  function loop(){if(!activo)return;vy+=.2;y+=vy;if(y>245){y=245;vy=-6}if(y<18){vy=0;y=18}draw();requestAnimationFrame(loop)}
+  cv.addEventListener('click',e=>{
+    if(!activo)return;
+    const r=cv.getBoundingClientRect();
+    const cx2=(e.clientX-r.left)*cv.width/r.width;
+    const cy=(e.clientY-r.top)*cv.height/r.height;
+    if(Math.hypot(cx2-170,cy-y)<35){golpes++;vy=-6-Math.random()*3}
+  });
+  cv.addEventListener('touchstart',e=>{
+    e.preventDefault();if(!activo)return;
+    const t=e.touches[0];const r=cv.getBoundingClientRect();
+    const cx2=(t.clientX-r.left)*cv.width/r.width;
+    const cy=(t.clientY-r.top)*cv.height/r.height;
+    if(Math.hypot(cx2-170,cy-y)<40){golpes++;vy=-6-Math.random()*3}
+  },{passive:false});
+  loop();
+  const ti=setInterval(()=>{tiempo--;if(tiempo<=0){activo=false;clearInterval(ti);info.innerHTML='<span style="color:#f7c948;font-weight:700">⏱ '+golpes+' golpes</span>';setTimeout(done,1200)}},1000);
+}
+
+// ---------- TRIVIA ----------
+function gameTrivia(c,done){
+  let usado=0;
+  window._triviaDone=done;
+  function nueva(){
+    if(usado>=3) return c.innerHTML='<div class="game-over"><div class="emoji">🏆</div><div class="msg">Bien ahí!</div></div>',setTimeout(done,1000);
+    usado++;
+    const q=PREGUNTAS[Math.floor(Math.random()*PREGUNTAS.length)];
+    c.innerHTML='<div style="text-align:center;padding:8px"><div style="font-size:.85rem;font-weight:600;margin-bottom:8px">'+q.p+'</div><input type="text" id="trivInp" placeholder="Tu respuesta" style="padding:8px 10px;border-radius:8px;border:1px solid rgba(247,201,72,.3);background:rgba(255,255,255,.06);color:#fff;width:70%;text-align:center;font-size:.8rem;outline:none"><div style="margin-top:6px"><button class="btn btn-small" onclick="checkTriv(\''+q.r+'\')">Responder</button></div></div>';
+  }
+  window.checkTriv=function(r){
+    const v=document.getElementById('trivInp')?.value.trim().toLowerCase()||'';
+    c.innerHTML='<div style="text-align:center;padding:16px;font-size:1rem">'+(v===r?'✅ Correcto!':'❌ Era: '+r.toUpperCase())+'</div>';
+    setTimeout(nueva,700);
+  };
+  nueva();
+}
+
+// ---------- REACCIÓN ----------
+function gameReaccion(c,done){
+  c.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:1.8rem;margin-bottom:8px">👀</div><div style="font-size:.8rem;margin-bottom:12px">Esperá la verde y tocá!</div><div id="reacBox" style="width:100px;height:100px;border-radius:50px;margin:0 auto;background:#555;transition:background .3s;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;cursor:pointer"></div><div style="margin-top:8px;font-size:.75rem;color:#8891b0" id="reacMsg">Preparate...</div></div>';
+  const box=document.getElementById('reacBox');
+  const msg=document.getElementById('reacMsg');
+  let listo=false,term=false;
+  box.onclick=()=>{
+    if(term)return;
+    if(listo){term=true;box.style.background='#2ecc71';msg.textContent='✅ Bien!';setTimeout(done,800)}
+    else{msg.textContent='❌ Muy temprano!';box.style.background='#e74c3c';setTimeout(()=>{if(!term)box.style.background='#555'},300)}
+  };
+  const esp=1000+Math.random()*3000;
+  setTimeout(()=>{if(!term){listo=true;box.style.background='#2ecc71';box.textContent='👆';msg.textContent='TOCÁ!';setTimeout(()=>{if(!term){term=true;msg.textContent='⏱ Demasiado tarde';setTimeout(done,800)}},1500)}},esp);
+}
+
+// ---------- PARTIDO ----------
+function gamePartido(c,done){
+  const cv=document.createElement('canvas');
+  cv.width=360;cv.height=240;
+  const cx=cv.getContext('2d');
+  c.innerHTML='<div style="text-align:center;font-size:.7rem;color:#8891b0;margin-bottom:4px">🇦🇷 vs 🇧🇷</div>';
+  c.appendChild(cv);
+  let gA=0,gB=0,t=60;
+  const j=[];
+  for(let i=0;i<5;i++)j.push({x:80,y:35+i*38,dx:1,dy:0,team:'A'});
+  for(let i=0;i<5;i++)j.push({x:280,y:35+i*38,dx:-1,dy:0,team:'B'});
+  function sim(){
+    cx.clearRect(0,0,360,240);
+    cx.fillStyle='#1a5c2a';cx.fillRect(0,0,360,240);
+    cx.strokeStyle='rgba(255,255,255,.12)';cx.lineWidth=1;cx.strokeRect(4,4,352,232);
+    cx.beginPath();cx.moveTo(180,4);cx.lineTo(180,236);cx.stroke();
+    cx.beginPath();cx.arc(180,120,35,0,Math.PI*2);cx.stroke();
+    j.forEach(p=>{
+      p.x+=p.dx*(1+Math.random());p.y+=Math.sin(Date.now()/300+p.x)*.5;
+      if(p.x<15||p.x>345)p.dx*=-1;
+      if(Math.random()<.03&&Math.random()<.4)p.dx*=-1;
+      if(Math.random()<.008&&p.team==='A')gA++;
+      if(Math.random()<.008&&p.team==='B')gB++;
+      cx.fillStyle=p.team==='A'?'#75aadb':'#4caf50';
+      cx.beginPath();cx.arc(p.x,p.y,5,0,Math.PI*2);cx.fill();
+    });
+    const px=180+Math.sin(Date.now()/800)*100;
+    const py=120+Math.cos(Date.now()/700)*70;
+    cx.fillStyle='#fff';cx.beginPath();cx.arc(px,py,3.5,0,Math.PI*2);cx.fill();
+    cx.fillStyle='rgba(0,0,0,.5)';cx.fillRect(115,6,130,22);
+    cx.fillStyle='#fff';cx.font='bold 13px Poppins';cx.textAlign='center';cx.fillText('🇦🇷 '+gA+' - '+gB+' 🇧🇷',180,22);
+    t--;
+    if(t>0)requestAnimationFrame(sim);
+    else{cx.fillStyle='rgba(0,0,0,.65)';cx.fillRect(80,90,200,50);cx.fillStyle='#f7c948';cx.font='bold 15px Poppins';cx.fillText('⚽ Final: '+gA+' - '+gB,180,120);setTimeout(done,1200)}
+  }
+  sim();
+}
+
+// ---------- REALIDAD 3D ----------
+function gameRealidad3D(c,done){
+  const cv=document.createElement('canvas');
+  cv.width=380;cv.height=280;
+  const cx=cv.getContext('2d');
+  const W=380,H=280;
+  c.innerHTML='<div style="text-align:center;font-size:.7rem;color:#8891b0;margin-bottom:4px">🥽 Usá lentes rojo-cian para ver en 3D</div>';
+  c.appendChild(cv);
+  let f=0;
+
+  function drawStarfield(){
+    for(let i=0;i<40;i++){
+      const sx=(i*137+50)%W,sy=(i*97+30)%H,sr=1+((i*7)%3);
+      cx.fillStyle='rgba(255,255,255,'+(.15+Math.sin(i+f*.02)*.1)+')';
+      cx.beginPath();cx.arc(sx,sy,sr,0,Math.PI*2);cx.fill();
+    }
+  }
+
+  function drawEye(off,color,isRed,isCyan){
+    // 1. Fondo gradiente de estadio
+    const grad=cx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0,'#0a1628');
+    grad.addColorStop(.5,'#132040');
+    grad.addColorStop(1,'#1a2a1a');
+    cx.fillStyle=grad;
+    cx.fillRect(0,0,W,H);
+
+    drawStarfield();
+
+    // 2. Gradas del estadio (arcos)
+    for(let g=0;g<5;g++){
+      const gy=200+g*14,gh=10;
+      cx.fillStyle=color;
+      cx.globalAlpha=.15-g*.02;
+      cx.fillRect(20+off*.3+g*10,gy,W-40-g*20,gh);
+    }
+    cx.globalAlpha=1;
+
+    // 3. Campo de juego (cancha)
+    cx.fillStyle='rgba(0,80,20,'+(isRed?.12:.1)+')';
+    cx.fillRect(40+off*.2,180+off*.1,W-80,60);
+    cx.strokeStyle=color;cx.lineWidth=.5;
+    cx.globalAlpha=.3;
+    cx.strokeRect(40+off*.2,180+off*.1,W-80,60);
+    cx.beginPath();cx.moveTo(W/2+off*.1,180+off*.1);cx.lineTo(W/2+off*.1,240);cx.stroke();
+    cx.beginPath();cx.arc(W/2+off*.1,210,15,0,Math.PI*2);cx.stroke();
+    cx.globalAlpha=1;
+
+    // 4. Pelota 3D rotando con hexágonos
+    const bx=120+off,bx2=120-off*.5; // depth offset for two eyes
+    const by=115,br=28;
+    const rot=f*.04;
+    // Dibujar pentágonos/hexágonos simulados
+    for(let p=0;p<5;p++){
+      const pa=p/5*Math.PI*2+rot;
+      const px=bx+Math.cos(pa)*br,py=by+Math.sin(pa)*br*.8;
+      cx.fillStyle=color;
+      cx.globalAlpha=isRed?.6:.5;
+      cx.beginPath();
+      for(let s=0;s<6;s++){
+        const sa=s/6*Math.PI*2+pa;
+        const r2=10+Math.sin(pa*2+f*.03)*3;
+        const sx2=px+Math.cos(sa)*r2,sy2=py+Math.sin(sa)*r2*.8;
+        s===0?cx.moveTo(sx2,sy2):cx.lineTo(sx2,sy2);
+      }
+      cx.closePath();cx.fill();
+      cx.strokeStyle=color;cx.lineWidth=1;
+      cx.globalAlpha=isRed?.8:.7;
+      cx.stroke();
+    }
+    cx.globalAlpha=1;
+
+    // 5. Trofeo 3D (copa)
+    const tx=280+off*3,tx2=280-off;
+    const ty=100;
+    // Base del trofeo
+    cx.fillStyle=color;
+    cx.globalAlpha=isRed?.7:.6;
+    cx.fillRect(tx-12,ty+35,24,5);
+    cx.fillRect(tx-8,ty+25,16,12);
+    // Copa
+    cx.beginPath();
+    cx.moveTo(tx-15,ty+25);
+    cx.lineTo(tx-20,ty);
+    cx.lineTo(tx+20,ty);
+    cx.lineTo(tx+15,ty+25);
+    cx.closePath();cx.fill();
+    // Asas
+    cx.lineWidth=2;
+    cx.beginPath();cx.arc(tx-18,ty+8,12,0,Math.PI*1.5);cx.stroke();
+    cx.beginPath();cx.arc(tx+18,ty+8,12,Math.PI*.5,Math.PI);cx.stroke();
+    // Estrella en la copa
+    cx.font='bold 18px Poppins';cx.textAlign='center';
+    cx.fillStyle=color;
+    cx.globalAlpha=isRed?.9:.8;
+    cx.fillText('★',tx,ty+12);
+    cx.globalAlpha=1;
+
+    // 6. Anillos olímpicos 3D
+    const rings=[
+      {x:100,y:230,r:12},
+      {x:140,y:230,r:12},
+      {x:180,y:230,r:12},
+      {x:120,y:242,r:12},
+      {x:160,y:242,r:12}
+    ];
+    rings.forEach((r,i)=>{
+      const rox=r.x+off*.8*(i%2?1:-1);
+      cx.strokeStyle=color;
+      cx.globalAlpha=isRed?.5:.4;
+      cx.lineWidth=2;
+      cx.beginPath();cx.arc(rox,r.y,r.r,0,Math.PI*2);cx.stroke();
+    });
+    cx.globalAlpha=1;
+
+    // 7. Banderas 3D flameando
+    for(let b=0;b<3;b++){
+      const bf=(b+1)*.7;
+      const bx3=50+b*130+off*bf;
+      const by3=150+Math.sin(f*.05+b)*5;
+      cx.fillStyle=color;
+      cx.globalAlpha=isRed?.35:.25;
+      cx.fillRect(bx3,by3,3,20);
+      // banderín
+      cx.beginPath();
+      cx.moveTo(bx3+3,by3);
+      cx.lineTo(bx3+20+Math.sin(f*.08+b)*4,by3+8);
+      cx.lineTo(bx3+3,by3+16);
+      cx.closePath();cx.fill();
+    }
+    cx.globalAlpha=1;
+
+    // 8. Texto 3D grande
+    cx.font='bold 20px Poppins';cx.textAlign='center';
+    cx.fillStyle=color;
+    cx.globalAlpha=isRed?.8:.7;
+    cx.fillText('MUNDIAL 2026',W/2+off*2,265);
+    cx.font='10px Poppins';
+    cx.fillText('🥽 Usá lentes 3D',W/2+off,278);
+    cx.globalAlpha=1;
+  }
+
+  function draw3d(){
+    cx.clearRect(0,0,W,H);
+    // Left eye (red)
+    drawEye(-4,'rgba(255,0,0,'+(.7+Math.sin(f*.02)*.1)+')',true,false);
+    // Right eye (cyan)
+    drawEye(4,'rgba(0,255,255,'+(.7+Math.sin(f*.02)*.1)+')',false,true);
+    f++;
+    if(f<300) requestAnimationFrame(draw3d);
+    else setTimeout(done,400);
+  }
+  draw3d();
+}
+
+// ==================== FIGURITA PANINI ====================
+const _figImgs=[]; // preloaded images
+function preloadFiguritaImgs(callback){
+  const srcs=['images.jpg','images (1).jpg','images (2).jpg','images (3).jpg'];
+  let loaded=0;
+  if(_figImgs.length===4) return callback();
+  srcs.forEach((src,i)=>{
+    const img=new Image();
+    img.onload=function(){_figImgs[i]=img;loaded++;if(loaded===4)callback()};
+    img.onerror=function(){_figImgs[i]=null;loaded++;if(loaded===4)callback()};
+    img.src=src;
+  });
+}
+preloadFiguritaImgs(function(){});
+
+// Polyfill roundRect for browsers that don't support it
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+    if(r>w/2)r=w/2;if(r>h/2)r=h/2;
+    this.moveTo(x+r,y);
+    this.arcTo(x+w,y,x+w,y+h,r);
+    this.arcTo(x+w,y+h,x,y+h,r);
+    this.arcTo(x,y+h,x,y,r);
+    this.arcTo(x,y,x+w,y,r);
+    return this;
+  };
+}
+
+function dibujarFigurita(){
+  try{
+  const cv=document.getElementById('figuritaCanvas');
+  const cx=cv.getContext('2d');
+  const w=600,h=850;
+  cx.clearRect(0,0,w,h);
+  const foto=localStorage.getItem('mc_foto')||'';
+  const name=playerName||'JUGADOR';
+
+  // BACKGROUND: turquesa
+  cx.fillStyle='#18b5b5';
+  cx.fillRect(0,0,w,h);
+
+  // Test: draw a white rectangle to verify canvas works
+  cx.fillStyle='#ffffff';
+  cx.fillRect(20,20,100,40);
+
+  // Draw preloaded images as background pattern
+  _figImgs.forEach((img,i)=>{
+    if(!img) return;
+    const cols=2,rows=2;
+    const sw=w/cols, sh=h/rows;
+    const col=i%cols, row=Math.floor(i/cols);
+    cx.save();
+    cx.globalAlpha=0.07;
+    cx.drawImage(img,col*sw,row*sh,sw,sh);
+    cx.restore();
+  });
+
+  // Corner decorations with images
+  _figImgs.forEach((img,i)=>{
+    if(!img) return;
+    const corners=[
+      {x:10,y:10,w:100,h:40},
+      {x:w-110,y:10,w:100,h:40},
+      {x:10,y:h-50,w:100,h:40},
+      {x:w-110,y:h-50,w:100,h:40}
+    ];
+    const c=corners[i];
+    cx.save();
+    cx.globalAlpha=0.12;
+    cx.drawImage(img,c.x,c.y,c.w,c.h);
+    cx.restore();
+  });
+
+  // GIANT 26
+  cx.save();
+  cx.font='bold 420px Poppins';
+  cx.textBaseline='middle';
+  // 2 darker blue
+  cx.fillStyle='#0f8d8d';
+  cx.textAlign='left';
+  cx.fillText('2',20,380);
+  // 6 white
+  cx.fillStyle='#ffffff';
+  cx.textAlign='left';
+  cx.fillText('6',180,350);
+  cx.restore();
+
+  // FIFA vertical top-right
+  cx.save();
+  cx.translate(w-24,30);
+  cx.fillStyle='#ffffff';
+  cx.font='bold 10px Poppins';
+  cx.textAlign='center';
+  cx.fillText('F',0,0);
+  cx.fillText('I',0,13);
+  cx.fillText('F',0,26);
+  cx.fillText('A',0,39);
+  cx.font='8px Poppins';
+  cx.fillText('®',6,-4);
+  cx.restore();
+
+  // RIGHT SIDE: ARG design with flag oval
+  // Argentina flag oval
+  const flagY=100;
+  cx.save();
+  // oval bg
+  cx.beginPath();
+  cx.ellipse(w-35,flagY,22,16,0,0,Math.PI*2);
+  cx.fillStyle='#75aadb';
+  cx.fill();
+  // stripes
+  for(let i=-8;i<=8;i+=2){
+    cx.beginPath();
+    cx.ellipse(w-35,flagY,22,16,0,0,Math.PI*2);
+    cx.save();
+    cx.beginPath();cx.rect(w-35+i*2-1,flagY-20,2,40);cx.clip();
+    cx.fillStyle=i%4===0?'#fff':'#75aadb';
+    cx.fill();
+    cx.restore();
+  }
+  // sun
+  cx.fillStyle='#f7c948';
+  cx.font='12px Poppins';
+  cx.textAlign='center';
+  cx.textBaseline='middle';
+  cx.fillText('☀',w-35,flagY+1);
+  cx.restore();
+
+  // ARG abstract blocks
+  cx.fillStyle='rgba(255,255,255,.15)';
+  [[w-32,140,18,8],[w-28,155,14,8],[w-35,170,22,8],[w-30,185,16,8],
+   [w-28,200,14,8],[w-32,215,18,8],[w-35,230,22,8],[w-28,245,14,8]].forEach(([x,y,an,al]) => {
+    cx.beginPath();cx.roundRect(x,y,an,al,4);cx.fill();
+  });
+  if(!cx.roundRect){
+    // fallback
+    cx.fillStyle='rgba(255,255,255,.15)';
+    cx.fillRect(w-32,140,18,8);cx.fillRect(w-28,155,14,8);cx.fillRect(w-35,170,22,8);
+    cx.fillRect(w-30,185,16,8);cx.fillRect(w-28,200,14,8);cx.fillRect(w-32,215,18,8);
+    cx.fillRect(w-35,230,22,8);cx.fillRect(w-28,245,14,8);
+  }
+
+  // PHOTO AREA - face portrait
+  const px=70,py=140,pw=280,ph=340;
+
+  // Background images in photo area (using preloaded)
+  _figImgs.forEach((img,i)=>{
+    if(!img) return;
+    const segW=pw/2,segH=ph/2;
+    const col=i%2,row=Math.floor(i/2);
+    cx.save();
+    cx.beginPath();cx.roundRect(px,py,pw,ph,12);cx.clip();
+    cx.globalAlpha=0.09;
+    cx.drawImage(img,px+col*segW,py+row*segH,segW,segH);
+    cx.restore();
+  });
+
+  // Draw placeholder (photo will overlay when loaded)
+  cx.fillStyle='rgba(0,0,0,.12)';
+  cx.beginPath();cx.roundRect(px,py,pw,ph,12);cx.fill();
+  cx.strokeStyle='rgba(255,255,255,.2)';cx.lineWidth=2;
+  cx.beginPath();cx.roundRect(px,py,pw,ph,12);cx.stroke();
+
+  if(foto){
+    const img=new Image();
+    img.onload=function(){
+      const ratio=Math.max(pw/img.width,ph/img.height);
+      const iw=img.width*ratio,ih=img.height*ratio;
+      const ix=px+(pw-iw)/2,iy=py+(ph-ih)/2;
+      cx.save();
+      cx.beginPath();cx.roundRect(px,py,pw,ph,12);cx.clip();
+      cx.drawImage(img,ix,iy,iw,ih);
+      cx.restore();
+      cx.strokeStyle='rgba(255,255,255,.2)';cx.lineWidth=2;
+      cx.beginPath();cx.roundRect(px,py,pw,ph,12);cx.stroke();
+    };
+    img.src=foto;
+  }
+
+  if(!foto){
+    cx.fillStyle='rgba(255,255,255,.3)';
+    cx.font='16px Poppins';
+    cx.textAlign='center';
+    cx.textBaseline='middle';
+    cx.fillText('📸 Sacate una foto',190,310);
+  }
+
+  // INFORMACIÓN INFERIOR (like Panini)
+  // Dark blue info cards
+  const iy=510;
+  // Name card
+  const nameText=playerName||'JUGADOR';
+  const nameSize=nameText.length>12?24:32;
+  cx.fillStyle='#0a1a3a';
+  cx.beginPath();cx.roundRect(30,iy,540,48,8);cx.fill();
+  cx.fillStyle='#ffffff';
+  cx.font='bold '+nameSize+'px Poppins';
+  cx.textAlign='center';
+  cx.textBaseline='middle';
+  cx.fillText(nameText,300,iy+24);
+
+  // Bio card
+  cx.fillStyle='#0a1a3a';
+  cx.beginPath();cx.roundRect(30,iy+58,540,38,8);cx.fill();
+  cx.fillStyle='#ccd1de';
+  cx.font='16px Poppins';
+  cx.textAlign='center';
+  cx.textBaseline='middle';
+  const fecha=playerDOB||'01-01-2000';
+  const altura=playerHeight||'1.75';
+  const peso=playerWeight||'70';
+  cx.fillText(fecha+'  |  '+altura+' m  |  '+peso+' kg',300,iy+77);
+
+  // Club card
+  cx.fillStyle='#0a1a3a';
+  cx.beginPath();cx.roundRect(30,iy+106,380,38,8);cx.fill();
+  cx.fillStyle='#ccd1de';
+  cx.font='16px Poppins';
+  cx.textAlign='left';
+  cx.textBaseline='middle';
+  cx.fillText('⚽ '+(playerClub||'MUNDIAL CREATIVO 2026'),46,iy+125);
+
+  // PANINI logo bottom-right
+  cx.fillStyle='#f7c948';
+  cx.beginPath();cx.roundRect(w-160,iy+106,130,38,8);cx.fill();
+  cx.fillStyle='#0a1a3a';
+  cx.font='bold 18px Poppins';
+  cx.textAlign='center';
+  cx.textBaseline='middle';
+  cx.fillText('PANINI 2026',w-95,iy+125);
+
+  // ARGENTINA strip / kit detail at bottom of photo
+  cx.fillStyle='#75aadb';
+  cx.fillRect(px,py+ph-30,pw,30);
+  cx.fillStyle='#ffffff';
+  for(let i=0;i<13;i++){
+    cx.fillRect(px+i*20,py+ph-30,8,30);
+  }
+
+  // Stars (3 world cups)
+  for(let s=0;s<3;s++){
+    cx.fillStyle='#f7c948';
+    cx.font='24px Poppins';
+    cx.textAlign='center';
+    cx.textBaseline='middle';
+    cx.fillText('★',150+s*35,505);
+  }
+
+  if(!foto){
+    cx.fillStyle='rgba(255,255,255,.3)';
+    cx.font='16px Poppins';
+    cx.textAlign='center';
+    cx.textBaseline='middle';
+    cx.fillText('📸 Sacate una foto',190,310);
+  }
+  }catch(e){console.error('Figurita error:',e)}
+}
+
+function abrirCamara(){
+  const modal=document.getElementById('camModal');
+  const content=document.getElementById('camContent');
+  content.innerHTML='<div style="text-align:center;padding:8px"><video id="camVideo" autoplay playsinline style="width:100%;border-radius:8px;background:#000;max-height:250px"></video><canvas id="camCanvas" style="display:none"></canvas><div id="camStatus" style="font-size:.7rem;color:#8891b0;margin-top:6px">Iniciando cámara...</div><div style="margin-top:6px;display:flex;gap:6px;justify-content:center"><button class="btn btn-small" onclick="capturarFoto()" id="captureBtn" disabled>📸 Capturar</button><button class="btn btn-small btn-sec" onclick="subirArchivo()">📁 Subir</button></div></div>';
+  modal.classList.add('active');
+  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:640,height:480}})
+      .then(s=>{
+        const v=document.getElementById('camVideo');
+        v.srcObject=s;
+        window._camStream=s;
+        v.onloadedmetadata=function(){
+          v.play();
+          v.style.width='100%';
+          document.getElementById('camStatus').textContent='✅ Listo! Tocá Capturar';
+          document.getElementById('captureBtn').disabled=false;
+        };
+      })
+      .catch(()=>{document.getElementById('camStatus').textContent='❌ No se pudo abrir la cámara'});
+  } else {
+    document.getElementById('camStatus').textContent='❌ Cámara no disponible. Usá "Subir"';
+  }
+}
+
+function closeCam(){
+  document.getElementById('camModal').classList.remove('active');
+  if(window._camStream){window._camStream.getTracks().forEach(t=>t.stop());window._camStream=null}
+}
+
+function capturarFoto(){
+  const video=document.getElementById('camVideo');
+  const canvas=document.getElementById('camCanvas');
+  const w=video.videoWidth||480;
+  const h=video.videoHeight||640;
+  canvas.width=w;
+  canvas.height=h;
+  const ctx=canvas.getContext('2d');
+  // Fill white background first in case video frame is transparent
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,w,h);
+  ctx.drawImage(video,0,0,w,h);
+  const data=canvas.toDataURL('image/jpeg',.9);
+  localStorage.setItem('mc_foto',data);
+  closeCam();
+  dibujarFigurita();
+}
+
+function subirArchivo(){
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='image/*';
+  inp.onchange=function(e){
+    const file=e.target.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(ev){localStorage.setItem('mc_foto',ev.target.result);closeCam();dibujarFigurita()};
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+
+// ==================== QR COMPARTIR JUEGO ====================
+function compartirJuegoQR(){
+  const url=getNetworkURL();
+  const modal=document.getElementById('qrModal');
+  const content=document.getElementById('qrContent');
+  content.innerHTML='<div style="padding:8px"><h3 style="font-size:1rem;margin-bottom:6px">📱 Compartí el juego</h3>'+
+    '<p style="font-size:.75rem;color:#8891b0;margin-bottom:8px">Escaneá este QR para abrir el juego en otro dispositivo</p>'+
+    '<div id="qrCompartir" style="display:flex;justify-content:center;margin:10px 0"></div>'+
+    '<p style="font-size:.75rem;color:#f7c948;font-weight:600;word-break:break-all">'+url+'</p>'+
+    '<p style="font-size:.65rem;color:#8891b0;margin-top:6px">Ambos dispositivos deben estar en la MISMA red WiFi</p></div>';
+  modal.classList.add('active');
+  setTimeout(()=>{
+    const el=document.getElementById('qrCompartir');
+    if(el){
+      el.innerHTML='';
+      new QRCode(el,{text:url,width:220,height:220,colorDark:'#f7c948',colorLight:'#0b0e1a',correctLevel:QRCode.CorrectLevel.H});
+    }
+  },200);
+}
+
+// Inicializar QR del header al cargar
+function getNetworkURL(){
+  // Try to use the host from the current URL (works if accessing via network IP)
+  return window.location.protocol+'//'+window.location.host;
+}
+function initHeaderQR(){
+  const el=document.getElementById('headerQRCode');
+  if(typeof QRCode!=='undefined'){
+    el.innerHTML='';
+    el.style.cssText='display:flex;align-items:center;justify-content:center;width:62px;height:62px';
+    try{
+      new QRCode(el,{text:getNetworkURL(),width:62,height:62,colorDark:'#f7c948',colorLight:'transparent',correctLevel:QRCode.CorrectLevel.H});
+    }catch(e){
+      el.style.cssText='display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#f7c948';
+      el.textContent='📱';
+    }
+  }
+}
+setTimeout(initHeaderQR,1000);
+
+// ==================== QR COMPARTIR DATOS ====================
+function generarQR(){
+  const modal=document.getElementById('qrModal');
+  const content=document.getElementById('qrContent');
+
+  const data=JSON.stringify({
+    name:playerName||'JUGADOR',
+    club:playerClub||'',
+    dob:playerDOB||'',
+    height:playerHeight||'',
+    weight:playerWeight||'',
+    scores:scores
+  });
+
+  content.innerHTML='<div style="padding:8px"><h3 style="font-size:1rem;margin-bottom:6px">📱 Escaneá con otro celular</h3>'+
+    '<div id="qrCode" style="display:flex;justify-content:center;margin:10px 0"></div>'+
+    '<p style="font-size:.7rem;color:#8891b0">La foto no se transfiere por QR. Sacá una nueva foto al importar.</p></div>';
+
+  modal.classList.add('active');
+  setTimeout(()=>{
+    document.getElementById('qrCode').innerHTML='';
+    new QRCode(document.getElementById('qrCode'),{
+      text:data,width:200,height:200,colorDark:'#f7c948',colorLight:'#0b0e1a',correctLevel:QRCode.CorrectLevel.H
+    });
+  },200);
+}
+
+function cerrarQR(){
+  document.getElementById('qrModal').classList.remove('active');
+  if(window._qrStream){window._qrStream.getTracks().forEach(t=>t.stop());window._qrStream=null}
+}
+
+function escanearQR(){
+  const modal=document.getElementById('qrModal');
+  const content=document.getElementById('qrContent');
+  content.innerHTML='<div style="padding:8px"><h3 style="font-size:1rem;margin-bottom:6px">📷 Escaneá un QR</h3>'+
+    '<video id="qrVideo" autoplay playsinline style="width:100%;border-radius:8px;background:#000;max-height:220px"></video>'+
+    '<canvas id="qrScanCanvas" style="display:none"></canvas>'+
+    '<div id="qrScanMsg" style="margin-top:8px;font-size:.8rem;color:#8891b0">Esperando...</div>'+
+    '<div style="margin-top:8px"><button class="btn btn-small btn-sec" onclick="subirQR()">📁 Subir imagen QR</button></div></div>';
+  modal.classList.add('active');
+
+  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:320,height:320}})
+      .then(s=>{
+        document.getElementById('qrVideo').srcObject=s;
+        window._qrStream=s;
+        scanQRFromVideo();
+      })
+      .catch(()=>{document.getElementById('qrScanMsg').textContent='❌ No se pudo abrir la cámara'});
+  } else {
+    document.getElementById('qrScanMsg').textContent='❌ Cámara no disponible, subí una imagen';
+  }
+}
+
+let _qrScanTimer=null;
+function scanQRFromVideo(){
+  const video=document.getElementById('qrVideo');
+  const canvas=document.getElementById('qrScanCanvas');
+  const msg=document.getElementById('qrScanMsg');
+  if(!video||!video.videoWidth) return _qrScanTimer=setTimeout(scanQRFromVideo,500);
+  const w=video.videoWidth,h=video.videoHeight;
+  canvas.width=w;canvas.height=h;
+  const ctx=canvas.getContext('2d');
+
+  function scan(){
+    if(!video.srcObject) return;
+    ctx.drawImage(video,0,0,w,h);
+    const imgData=ctx.getImageData(0,0,w,h);
+    const code=jsQR(imgData.data,w,h);
+    if(code){
+      msg.textContent='✅ QR detectado!';
+      try{
+        const d=JSON.parse(code.data);
+        importarQRData(d);
+      }catch(e){
+        msg.textContent='❌ QR inválido';
+        setTimeout(()=>msg.textContent='Esperando...',1000);
+      }
+    }
+    if(video.srcObject) _qrScanTimer=requestAnimationFrame(scan);
+  }
+  scan();
+}
+
+function subirQR(){
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='image/*';
+  inp.onchange=function(e){
+    const file=e.target.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(ev){
+      const img=new Image();
+      img.onload=function(){
+        const c=document.createElement('canvas');
+        c.width=img.width;c.height=img.height;
+        const ctx=c.getContext('2d');
+        ctx.drawImage(img,0,0);
+        const imgData=ctx.getImageData(0,0,c.width,c.height);
+        const code=jsQR(imgData.data,c.width,c.height);
+        const msg=document.getElementById('qrScanMsg');
+        if(code){
+          msg.textContent='✅ QR leído!';
+          try{
+            const d=JSON.parse(code.data);
+            importarQRData(d);
+          }catch(e){msg.textContent='❌ QR inválido'}
+        }else{msg.textContent='❌ No se encontró QR en la imagen'}
+      };
+      img.src=ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+
+function importarQRData(d){
+  if(d.name){playerName=d.name;
+    document.getElementById('playerName').value=d.name;
+    localStorage.setItem('mc_player',d.name)}
+  if(d.club){playerClub=d.club;
+    document.getElementById('playerClub').value=d.club;
+    localStorage.setItem('mc_club',d.club)}
+  if(d.dob){playerDOB=d.dob;
+    document.getElementById('playerDOB').value=d.dob;
+    localStorage.setItem('mc_dob',d.dob)}
+  if(d.height){playerHeight=d.height;
+    document.getElementById('playerHeight').value=d.height;
+    localStorage.setItem('mc_height',d.height)}
+  if(d.weight){playerWeight=d.weight;
+    document.getElementById('playerWeight').value=d.weight;
+    localStorage.setItem('mc_weight',d.weight)}
+  if(d.scores){scores=d.scores;saveScores()}
+  cerrarQR();
+  renderAll();
+  alert('✅ Datos importados! Ahora sacá una foto.');
+}
+
+function imprimirFigurita(){
+  const cv=document.getElementById('figuritaCanvas');
+  // Ensure photo is loaded before printing
+  const foto=localStorage.getItem('mc_foto');
+  if(foto){
+    const img=new Image();
+    img.onload=function(){
+      dibujarFigurita();
+      setTimeout(()=>{window.print()},200);
+    };
+    img.src=foto;
+  } else {
+    window.print();
+  }
+}
+
+// ==================== AI CHAT ====================
+const respuestas={
+  saludo:['¡Hola! Soy tu asistente del Mundial 2026 ⚽','¡Bienvenido! ¿En qué te ayudo?','Hola, jugador! Preparado para los juegos?'],
+  juego:['Hay 8 juegos para jugar: Penales, Memorama, Sorteo de Grupos, Cabeceo, Trivia, Reacción, Partido FIFA y Realidad 3D. Tocá cualquier tarjeta para empezar!','Cada juego completado te da 5 puntos. Completalos todos para ser leyenda!','Los juegos tienen imágenes de fondo de la carpeta del Mundial.'],
+  penales:['⚽ Penales: Tocá la pelota para patear. Tenés 3 disparos, tratá de que el arquero no los ataje!','Mirá bien dónde se mueve el arquero y apuntá al otro lado.'],
+  memorama:['🧠 Memorama: Encontrá los 8 pares de banderas. Recordá dónde aparecen para juntarlos todos.','Concentrate y memorizá las posiciones, son todas banderas de selecciones.'],
+  sorteo:['🎲 Sorteo de Grupos: Descubrí qué grupo te tocó y contra quién jugás.','Los grupos tienen 4 equipos, a darlo todo en la fase de grupos!'],
+  cabeceo:['⚡ Cabeceo: Tocá la pelota para mantenerla en el aire. Tenés 8 segundos para hacer la mayor cantidad de golpes.','No dejes que la pelota toque el piso! Golpeala rápido cada vez que baje.'],
+  trivia:['🏆 Trivia: Respondé preguntas sobre la historia de los Mundiales. A ver cuánto sabés!','Leé bien la pregunta y escribí tu respuesta. Sin acentos ni mayúsculas.'],
+  reaccion:['👀 Reacción: Esperá a que el círculo se ponga verde y tocá lo más rápido posible.','No te apures! Si tocás antes del verde, perdés. Esperá el momento justo.'],
+  partido:['🎮 Partido FIFA: Simulación 5v5. Argentina vs Brasil en tiempo real. Mirá el marcador!','Los jugadores se mueven solos. Cada tanto puede haber un gol, animá a tu equipo!'],
+  '3d':['🥽 Realidad 3D: Experiencia anáglifo rojo-cian. Usá lentes 3D para verlo mejor!','Modo 3D con cubo flotante y anillos. Necesitás lentes rojo-cian.'],
+  figurita:['🃏 Tu figurita Panini tiene el diseño de Messi pero con tu cara! Sacate una foto y personalizala.','Completá tus datos (nombre, club, altura, etc) y sacate una foto para tu figurita.','Podés imprimir la figurita con el botón 🖨️ Imprimir.'],
+  foto:['📸 Para sacarte una foto, tocá "Sacar Foto", posá frente a la cámara y capturá.','La foto se guarda automáticamente. Si querés cambiarla, volvé a sacar otra.'],
+  imprimir:['🖨️ Imprimí tu figurita desde el botón correspondiente. Se va a abrir el cuadro de impresión del navegador.','Ajustá la escala en la impresión para que entre bien en el tamaño que quieras.'],
+  qr:['📱 QR Compartir: genera un código con tus datos para pasar a otro celular. El otro jugador escanea y recibe tu info.','La foto no se transfiere por QR. Cuando importes los datos, sacate una foto nueva.'],
+  puntos:['🏆 Tus puntos se acumulan por cada juego completado. Cada juego vale 5 puntos.','Llegá a 40 puntos para tener la puntuación máxima!'],
+  ayuda:['Podés preguntarme sobre: juegos (penales, memorama, sorteo, cabeceo, trivia, reacción, partido, 3d), figurita, foto, imprimir, qr, puntos, o simplemente saludar.','Decí "hola", "ayuda", o el nombre de cualquier juego y te cuento cómo funciona.'],
+  default:['No entendí bien. Decí "ayuda" para ver qué puedo responder.','Escribí el nombre de un juego o "ayuda" para orientarte.','No sé qué significa eso. Probá con "juegos", "figurita" o "ayuda".']
+};
+
+function toggleChat(){
+  const m=document.getElementById('chatModal');
+  const b=document.getElementById('chatBtn');
+  m.classList.toggle('open');
+  b.style.display=m.classList.contains('open')?'none':'block';
+  if(m.classList.contains('open')&&!document.getElementById('chatMsgs').children.length){
+    const msg=respuestas.saludo[Math.floor(Math.random()*respuestas.saludo.length)];
+    agregarMsg(msg,'bot');
+    setTimeout(()=>agregarMsg('¿Qué querés saber? Decí "ayuda" para ver todo lo que sé.','bot'),800);
+  }
+}
+
+function agregarMsg(texto,tipo){
+  const c=document.getElementById('chatMsgs');
+  const d=document.createElement('div');
+  d.className='chat-msg '+tipo;
+  d.textContent=texto;
+  c.appendChild(d);
+  c.scrollTop=c.scrollHeight;
+}
+
+function enviarMensaje(){
+  const inp=document.getElementById('chatInput');
+  const txt=inp.value.trim().toLowerCase();
+  if(!txt)return;
+  agregarMsg(inp.value.trim(),'user');
+  inp.value='';
+
+  setTimeout(()=>{
+    let respuesta=null;
+    if(/hola|buenas|que tal|hey|buen[oa]/.test(txt)) respuesta=respuestas.saludo;
+    else if(/penales?|penal/.test(txt)) respuesta=respuestas.penales;
+    else if(/memorama|memoria|pares|banderas/.test(txt)) respuesta=respuestas.memorama;
+    else if(/sorteo|grupos?|rivales/.test(txt)) respuesta=respuestas.sorteo;
+    else if(/cabeceo|cabeza|cabezazo/.test(txt)) respuesta=respuestas.cabeceo;
+    else if(/trivia|pregunta/.test(txt)) respuesta=respuestas.trivia;
+    else if(/reaccion|reacción|reflejos/.test(txt)) respuesta=respuestas.reaccion;
+    else if(/partido|fifa|simulación|simulacion/.test(txt)) respuesta=respuestas.partido;
+    else if(/3d|realidad|anaglifo|anáglifo/.test(txt)) respuesta=respuestas['3d'];
+    else if(/juego|juegos|tarjeta/.test(txt)) respuesta=respuestas.juego;
+    else if(/figurita|panini|cromo/.test(txt)) respuesta=respuestas.figurita;
+    else if(/foto|sacar|camara|cámara|captura/.test(txt)) respuesta=respuestas.foto;
+    else if(/imprimir|print|impresión|impresion/.test(txt)) respuesta=respuestas.imprimir;
+    else if(/qr|compartir|escane/.test(txt)) respuesta=respuestas.qr;
+    else if(/punto|puntaje|score|puntuación|puntuacion/.test(txt)) respuesta=respuestas.puntos;
+    else if(/ayuda|que sabes|qué sabes|comandos|podes|podés/.test(txt)) respuesta=respuestas.ayuda;
+    else respuesta=respuestas.default;
+    const msg=respuesta[Math.floor(Math.random()*respuesta.length)];
+    agregarMsg(msg,'bot');
+
+    // Check if user wants to play a game
+    if(/jugar|empezar|abrir (un )?juego/.test(txt)){
+      const gamesList=GAMES.map((g,i)=>`${i+1}. ${g.icon} ${g.title}`).join('\n');
+      setTimeout(()=>agregarMsg('Elegí un juego:\n'+gamesList,'bot'),600);
+    }
+  },300+Math.random()*400);
+}
+</script>
+</body>
+</html>
